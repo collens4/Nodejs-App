@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxSurge: 1
+       maxUnavailable: 1
+  minReadySeconds: 30   
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      name: nodejs-pod
+      labels:
+        app: nodejs
+    spec:
+      containers:
+      - name: nodejs-container
+        image: collens4/hello-world-express:latest
+        ports:
+        - containerPort: 3000
