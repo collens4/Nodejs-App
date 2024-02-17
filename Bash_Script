@@ -1,0 +1,17 @@
+#!/bin/bash
+sudo apt update
+sudo apt install docker.io -y
+sudo usermod -aG docker ubuntu
+
+CLUSTER_NAME="collins"
+KIND_VERSION="v0.11.1"
+KUBECONFIG_PATH="./kubeconfig"
+
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+kind create cluster --name $CLUSTER_NAME
+kind get kubeconfig --name $CLUSTER_NAME > $KUBECONFIG_PATH
+export KUBECONFIG=$KUBECONFIG_PATH
+
+chmod +x test.sh
